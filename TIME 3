@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <unistd.h> // For sleep function
+
+// Define the water tank capacity
+#define TANK_CAPACITY_L 1000
+
+// Struct to represent the water tank system
+typedef struct {
+    int currentLevel;   // Current water level in liters
+    bool isFull;        // Status to check if the tank is full
+} WaterTank;
+
+// Function to simulate water filling
+void fillWaterTank(WaterTank *tank) {
+    while (tank->currentLevel < TANK_CAPACITY_L) {
+        tank->currentLevel += 100; // Simulate water inflow of 100L at each step
+        printf("Filling... Current water level: %dL\n", tank->currentLevel);
+        sleep(1); // Pause to simulate time for filling
+    }
+    tank->isFull = true;
+}
+
+// Function to send an alert to the client when the tank is full
+void sendFullSignalToClient() {
+    printf("\nALERT: The water tank is now full!\n");
+}
+
+// Function to monitor the water level and alert when full
+void monitorTank(WaterTank *tank) {
+    if (tank->isFull) {
+        sendFullSignalToClient();
+    }
+}
+
+int main() {
+    // Initialize the water tank
+    WaterTank tank = { .currentLevel = 0, .isFull = false };
+
+    // Simulate filling the water tank
+    fillWaterTank(&tank);
+
+    // Check and alert when the tank is full
+    monitorTank(&tank);
+
+    return 0;
+}
