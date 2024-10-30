@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <stdbool.h>
+#include <unistd.h> // For sleep function
+
+// Constants for dosage calculation
+#define WATER_CAPACITY_L 1000
+#define COAGULANT_DOSAGE_MG 5000 // 5000 mg per 1000L
+
+// Struct to represent the water tank system
+typedef struct {
+    bool isFull;
+    int waterLevel;
+} WaterTank;
+
+// Struct to represent the sensor in the tank
+typedef struct {
+    bool waterDetected;
+} Sensor;
+
+// Struct for dosing system
+typedef struct {
+    int dosageAmountMg;
+    bool isDosed;
+} DosingSystem;
+
+// Function to simulate water filling
+void fillWaterTank(WaterTank *tank, Sensor *sensor) {
+    tank->waterLevel = WATER_CAPACITY_L; // Assume full capacity
+    sensor->waterDetected = true;
+    tank->isFull = true;
+    printf("Water tank filled. Current level: %dL\n", tank->waterLevel);
+}
+
+// Function to apply coagulant after filling
+void applyCoagulant(DosingSystem *dosingSystem) {
+    dosingSystem->dosageAmountMg = COAGULANT_DOSAGE_MG;
+    dosingSystem->isDosed = true;
+    printf("Applying %d mg of coagulants.\n", dosingSystem->dosageAmountMg);
+}
+
+// Function to control the dosing process
+void controlDosing(WaterTank *tank, Sensor *sensor, DosingSystem *dosingSystem) {
+    if (tank->isFull && sensor->waterDetected) {
+        printf("Water level full, waiting 15 minutes for dosing...\n");
+        sleep(15 * 60); // Wait for 15 minutes (900 seconds)
+        applyCoagulant(dosingSystem);
+    }
+}
+
+int main() {
+    // Initialize components
+    WaterTank tank = { .isFull = false, .waterLevel = 0 };
+    Sensor sensor = { .waterDetected = false };
+    DosingSystem dosingSystem = { .dosageAmountMg = 0, .isDosed = false };
+
+    // Simulate filling the water tank
+    fillWaterTank(&tank, &sensor);
+
+    // Control the dosing process
+    controlDosing(&tank, &sensor, &dosingSystem);
+
+    if (dosingSystem.isDosed) {
+        printf("Dosing completed successfully.\n");
+    }
+
+    return 0;
+}
