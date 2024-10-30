@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Structs for each parameter sensor
+typedef struct {
+    float pH;
+    float turbidity;
+    float temperature;
+    float alkalinity;
+    float acidity;
+} WaterQuality;
+
+// Function to simulate pH detection
+float detectPH() {
+    return (rand() % 140) / 10.0; // Simulates pH in range 0.0 to 14.0
+}
+
+// Function to simulate turbidity detection
+float detectTurbidity() {
+    return (rand() % 100); // Simulates turbidity in NTU (0 to 100 NTU)
+}
+
+// Function to simulate temperature detection
+float detectTemperature() {
+    return (rand() % 350) / 10.0; // Simulates temperature in degrees Celsius (0 to 35.0°C)
+}
+
+// Function to simulate alkalinity detection
+float detectAlkalinity() {
+    return (rand() % 500) / 10.0; // Simulates alkalinity in mg/L (0 to 50.0 mg/L)
+}
+
+// Function to simulate acidity detection
+float detectAcidity() {
+    return (rand() % 500) / 10.0; // Simulates acidity in mg/L (0 to 50.0 mg/L)
+}
+
+// Function to print and analyze water quality readings
+void analyzeWaterQuality(WaterQuality *quality) {
+    // Display readings
+    printf("Water Quality Analysis:\n");
+    printf("pH: %.1f\n", quality->pH);
+    printf("Turbidity: %.1f NTU\n", quality->turbidity);
+    printf("Temperature: %.1f °C\n", quality->temperature);
+    printf("Alkalinity: %.1f mg/L\n", quality->alkalinity);
+    printf("Acidity: %.1f mg/L\n", quality->acidity);
+
+    // Analyze pH
+    if (quality->pH < 6.5) {
+        printf("Warning: Water is acidic.\n");
+    } else if (quality->pH > 8.5) {
+        printf("Warning: Water is too alkaline.\n");
+    }
+
+    // Analyze turbidity
+    if (quality->turbidity > 5) {
+        printf("Warning: High turbidity level detected!\n");
+    }
+
+    // Analyze temperature
+    if (quality->temperature < 10.0 || quality->temperature > 30.0) {
+        printf("Warning: Temperature out of safe range!\n");
+    }
+
+    // Analyze alkalinity and acidity
+    if (quality->alkalinity > 20.0) {
+        printf("Warning: High alkalinity level!\n");
+    }
+    if (quality->acidity > 20.0) {
+        printf("Warning: High acidity level!\n");
+    }
+}
+
+int main() {
+    srand(time(0)); // Seed for random number generation
+
+    // Initialize water quality struct
+    WaterQuality quality;
+
+    // Simulate sensor readings
+    quality.pH = detectPH();
+    quality.turbidity = detectTurbidity();
+    quality.temperature = detectTemperature();
+    quality.alkalinity = detectAlkalinity();
+    quality.acidity = detectAcidity();
+
+    // Analyze the water quality
+    analyzeWaterQuality(&quality);
+
+    return 0;
+}
