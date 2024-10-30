@@ -1,0 +1,58 @@
+import time
+
+# Constants for dosage calculation
+WATER_CAPACITY_L = 1000
+COAGULANT_DOSAGE_MG = 5000  # 5000 mg per 1000L
+
+class WaterTank:
+    def __init__(self):
+        self.is_full = False
+        self.water_level = 0
+
+class Sensor:
+    def __init__(self):
+        self.water_detected = False
+
+class DosingSystem:
+    def __init__(self):
+        self.dosage_amount_mg = 0
+        self.is_dosed = False
+
+def fill_water_tank(tank, sensor):
+    """Simulate filling the water tank"""
+    tank.water_level = WATER_CAPACITY_L
+    sensor.water_detected = True
+    tank.is_full = True
+    print(f"Water tank filled. Current level: {tank.water_level}L")
+
+def apply_coagulant(dosing_system):
+    """Apply coagulant to the water"""
+    dosing_system.dosage_amount_mg = COAGULANT_DOSAGE_MG
+    dosing_system.is_dosed = True
+    print(f"Applying {dosing_system.dosage_amount_mg} mg of coagulants.")
+
+def control_dosing(tank, sensor, dosing_system):
+    """Control the dosing process"""
+    if tank.is_full and sensor.water_detected:
+        print("Water level full, waiting 15 minutes for dosing...")
+        time.sleep(15 * 60)  # Wait for 15 minutes
+        apply_coagulant(dosing_system)
+
+def main():
+    # Initialize components
+    tank = WaterTank()
+    sensor = Sensor()
+    dosing_system = DosingSystem()
+
+    # Simulate filling the water tank
+    fill_water_tank(tank, sensor)
+
+    # Control the dosing process
+    control_dosing(tank, sensor, dosing_system)
+
+    if dosing_system.is_dosed:
+        print("Dosing completed successfully.")
+
+if __name__ == "__main__":
+    main()
+
